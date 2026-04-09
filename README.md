@@ -32,19 +32,35 @@ OpenControlHub es una herramienta modular de código abierto que te permite cont
 
 ---
 
-## 📦 Quick Start / Inicio Rápido
+## 📦 Instalación y Uso / Installation & Usage
 
-### Windows
+### Opción A: Ejecutable (.exe) - Recomendado
+1. Descarga la última versión desde [Releases](https://github.com/MrZeltor/OpenControlHub/releases).
+2. Descomprime el archivo .zip.
+3. Ejecuta `OpenControlHub.exe`.
+4. El programa detectará tu IP automáticamente. Solo ábrela en tu celular.
+
+### Opción B: Desarrolladores (Python)
+#### Windows
 ```powershell
 ./scripts/run_host.bat
 ```
 
-### Linux / Mac
+#### Linux / Mac
 ```bash
 ./scripts/run_host.sh
 ```
 
-The interface will be available at `http://localhost:8000` (or your PC's IP).
+La interfaz estará disponible en `http://tu-ip-local:8000`.
+
+---
+
+## 🛠️ Cómo crear tu propio .exe
+Si has hecho cambios y quieres generar un nuevo ejecutable:
+```powershell
+./scripts/build.bat
+```
+El resultado estará en la carpeta `dist/`.
 
 ---
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,42 +9,150 @@
 <body>
     <header>
         <h1>OpenControlHub</h1>
-        <div id="status" class="status-disconnected">Disconnected</div>
+        <div id="status" class="status-disconnected">Desconectado</div>
     </header>
 
+    <div id="toast-container"></div>
+    
+    <!-- Input de Teclado Oculto -->
+    <input type="text" id="hiddenKeyboard" autocomplete="off" autocapitalize="off" spellcheck="false" style="position: absolute; opacity: 0; pointer-events: none; top: -100px;">
+
     <main id="dashboard">
-        <!-- VS Code Module -->
-        <section class="module-section">
-            <h2>VS Code</h2>
-            
+        <!-- Pestaña de Aplicaciones -->
+        <section id="apps-tab" class="tab-content active">
             <div class="card">
-                <h3>Recent Projects</h3>
+                <h3>Favoritos</h3>
                 <div class="grid-buttons">
-                    <button onclick="vscode.openProject('D:/Github-Star-Farming/PromptSqueeze')">PromptSqueeze</button>
-                    <button onclick="vscode.openProject('D:/Github-Star-Farming/OpenControlHub')">OpenControlHub</button>
+                    <button onclick="apps.launch('C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Riot Games/League of Legends.lnk', 'LoL')">
+                        <span class="icon">🎮</span> LoL
+                    </button>
+                    <button onclick="apps.launch('discord://', 'Discord')">
+                        <span class="icon">💬</span> Discord
+                    </button>
+                    <button onclick="apps.launch('start steam://open/main', 'Steam')">
+                        <span class="icon">🕹️</span> Steam
+                    </button>
+                    <button onclick="apps.launch('start spotify', 'Spotify')">
+                        <span class="icon">🎵</span> Spotify
+                    </button>
+                    <button onclick="apps.launch('start winword', 'Word')">
+                        <span class="icon">📝</span> Word
+                    </button>
+                    <button onclick="system.openExplorer('')">
+                        <span class="icon">📂</span> Explorador
+                    </button>
                 </div>
             </div>
 
             <div class="card">
-                <h3>Terminal Macros</h3>
-                <div class="grid-buttons">
-                    <button class="btn-macro" onclick="vscode.runMacro('git_status')">Git Status</button>
-                    <button class="btn-macro" onclick="vscode.runMacro('git_push')">Git Push</button>
-                    <button class="btn-macro" onclick="vscode.runMacro('npm_start')">NPM Start</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Prompt Input</h3>
+                <h3>Entrada de Texto</h3>
                 <div class="prompt-container">
-                    <textarea id="promptInput" placeholder="Type prompt here..."></textarea>
-                    <button class="btn-primary" onclick="vscode.sendPrompt()">Send to PC</button>
+                    <textarea id="promptInput" placeholder="Escribe algo al PC..."></textarea>
+                    <button class="btn-primary" onclick="apps.sendPrompt()">Enviar al PC</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pestaña de Sistema -->
+        <section id="system-tab" class="tab-content">
+            <details class="card accordion" open>
+                <summary><h3>Multimedia</h3></summary>
+                <div class="grid-buttons accordion-content">
+                    <button onclick="system.mediaControl('volumemute')"><span class="icon">🔇</span> Silencio</button>
+                    <button onclick="system.mediaControl('playpause')"><span class="icon">⏯️</span> Play/Pausa</button>
+                    <button onclick="system.mediaControl('volumedown')"><span class="icon">🔉</span> Bajar Vol.</button>
+                    <button onclick="system.mediaControl('volumeup')"><span class="icon">🔊</span> Subir Vol.</button>
+                    <button onclick="system.mediaControl('prevtrack')"><span class="icon">⏮️</span> Anterior</button>
+                    <button onclick="system.mediaControl('nexttrack')"><span class="icon">⏭️</span> Siguiente</button>
+                </div>
+            </details>
+
+            <details class="card accordion">
+                <summary><h3>Explorador de Archivos</h3></summary>
+                <div class="grid-buttons accordion-content">
+                    <button onclick="system.openExplorer('~')">
+                        <span class="icon">🏠</span> Usuario
+                    </button>
+                    <button onclick="system.openExplorer('~/Documents')">
+                        <span class="icon">📑</span> Documentos
+                    </button>
+                    <button onclick="system.openExplorer('~/Downloads')">
+                        <span class="icon">📥</span> Descargas
+                    </button>
+                    <button onclick="system.openExplorer('D:/Github-Star-Farming')">
+                        <span class="icon">⭐</span> Proyectos
+                    </button>
+                </div>
+            </details>
+
+            <details class="card accordion">
+                <summary><h3>Controles de Energía</h3></summary>
+                <div class="grid-buttons accordion-content">
+                    <button class="btn-danger" onclick="system.execute('shutdown /s /t 60', 'Apagar PC')">Apagar (1m)</button>
+                    <button class="btn-warning" onclick="system.execute('shutdown /r /t 0', 'Reiniciar')">Reiniciar</button>
+                    <button onclick="system.execute('rundll32.exe powrprof.dll,SetSuspendState 0,1,0', 'Suspender')">Suspender</button>
+                    <button onclick="system.execute('shutdown /a', 'Abortar')">Abortar</button>
+                </div>
+            </details>
+        </section>
+
+        <!-- Pestaña Remota -->
+        <section id="remote-tab" class="tab-content remote-tab-flex">
+            <!-- Barra de Controles Compacta -->
+            <div class="control-header-bar">
+                <select id="monitorSelect" class="mini-select" onchange="remote.setMonitor(this.value)">
+                    <option value="0">Toda la Pantalla</option>
+                </select>
+                <div class="header-controls">
+                    <button class="mini-btn" onclick="remote.adjustZoom(-0.2)">➖</button>
+                    <button class="mini-btn" onclick="remote.adjustZoom(0.2)">➕</button>
+                    <button class="mini-btn" onclick="keyboard.toggle()">⌨️</button>
+                    <button class="mini-btn btn-enter" onclick="keyboard.pressKey('enter')">↵ Intro</button>
+                    <button id="toggleStreamBtn" class="btn-primary mini-btn" onclick="remote.toggleStream()">▶ Iniciar</button>
+                </div>
+            </div>
+
+            <!-- Visualización de Pantalla -->
+            <div class="screen-container-fixed">
+                <div id="screenContainer" class="screen-scroll-area">
+                    <img id="screenStream" src="" alt="Pantalla Remota">
+                </div>
+            </div>
+
+            <!-- Área de Control Ratón -->
+            <div class="trackpad-container-full">
+                <div id="trackpad" class="trackpad-area">
+                    <span class="trackpad-label">TRACKPAD</span>
+                </div>
+                <div class="mouse-horizontal-buttons">
+                    <button class="btn-click" onclick="mouse.click('left')">CLICK IZQ</button>
+                    <button class="btn-click" onclick="mouse.click('right')">CLICK DER</button>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Navegación Inferior -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showTab('apps-tab')">
+            <span class="nav-icon">🚀</span>
+            <span class="nav-label">Apps</span>
+        </div>
+        <div class="nav-item" onclick="showTab('system-tab')">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Sistema</span>
+        </div>
+        <div class="nav-item" onclick="showTab('remote-tab')">
+            <span class="nav-icon">📺</span>
+            <span class="nav-label">Remoto</span>
+        </div>
+    </nav>
+
     <script src="src/js/modules/vscode.js"></script>
+    <script src="src/js/modules/system.js"></script>
+    <script src="src/js/modules/screen.js"></script>
+    <script src="src/js/modules/mouse.js"></script>
+    <script src="src/js/modules/keyboard.js"></script>
     <script src="src/js/app.js"></script>
 </body>
 </html>

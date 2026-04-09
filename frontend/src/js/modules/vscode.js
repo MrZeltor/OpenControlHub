@@ -1,18 +1,16 @@
-const vscode = {
-    openProject: (path) => {
-        sendCommand('vscode', 'open_path', path);
-    },
-    
-    runMacro: (macroName) => {
-        sendCommand('vscode', 'macro', macroName);
+const apps = {
+    launch: (command, label) => {
+        sendCommand('system', 'open_app', command);
+        showToast(`Iniciando: ${label}`);
     },
     
     sendPrompt: () => {
         const input = document.getElementById('promptInput');
         const text = input.value.trim();
         if (text) {
-            sendCommand('vscode', 'type_prompt', text);
-            input.value = ''; // Clear after sending
+            sendCommand('keyboard', 'type', text);
+            showToast('Texto enviado al PC');
+            input.value = ''; 
         }
     }
 };
