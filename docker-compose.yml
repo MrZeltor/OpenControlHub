@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  open-control-hub:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DISPLAY=:0 # Only if using X11 forwarding from host
+    restart: unless-stopped
