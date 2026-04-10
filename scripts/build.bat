@@ -13,12 +13,23 @@ if exist "venv" (
 pip install pyinstaller
 
 :: Ejecutar PyInstaller
-echo [OpenControlHub] Creando ejecutable .exe (esto puede tardar unos minutos)...
+echo [OpenControlHub] Creando ejecutable silencioso en segundo plano...
 :: --add-data "origen;destino" (en Windows usa ;)
 :: Incluimos la carpeta frontend y la estructura de backend
-pyinstaller --noconfirm --onedir --console --name "OpenControlHub" ^
+pyinstaller --noconfirm --onedir --noconsole --name "OpenControlHub" ^
+    --icon "icon.ico" ^
     --add-data "frontend;frontend" ^
     --add-data "backend;backend" ^
+    --collect-all "fastapi" ^
+    --collect-all "starlette" ^
+    --collect-all "uvicorn" ^
+    --collect-all "websockets" ^
+    --hidden-import "mss" ^
+    --hidden-import "PIL" ^
+    --hidden-import "pyautogui" ^
+    --hidden-import "pyperclip" ^
+    --hidden-import "pystray" ^
+    --hidden-import "six" ^
     --hidden-import "uvicorn.logging" ^
     --hidden-import "uvicorn.loops" ^
     --hidden-import "uvicorn.loops.auto" ^

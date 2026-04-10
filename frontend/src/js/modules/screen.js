@@ -29,6 +29,17 @@ const remote = {
         img.style.transformOrigin = 'top left';
         showToast(`Zoom: ${remote.zoomLevel.toFixed(1)}x`);
     },
+
+    forceReload: () => {
+        if (!remote.isStreaming) {
+            remote.isStreaming = true;
+            const btn = document.getElementById('toggleStreamBtn');
+            btn.textContent = '⏸ Parar';
+            btn.classList.add('btn-active');
+        }
+        remote.requestFrame();
+        showToast('Cuadro recargado');
+    },
     
     requestFrame: () => {
         if (remote.isStreaming) {

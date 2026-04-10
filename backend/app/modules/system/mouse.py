@@ -13,6 +13,8 @@ class MouseModule(BaseModule):
             self.move(data.get("dx", 0), data.get("dy", 0))
         elif action == "click":
             self.click(data)
+        elif action == "scroll":
+            self.scroll(int(data))
         else:
             logger.warning(f"Unknown action for Mouse: {action}")
 
@@ -31,3 +33,11 @@ class MouseModule(BaseModule):
             logger.info(f"Mouse click: {button}")
         except Exception as e:
             logger.error(f"Failed to click mouse: {str(e)}")
+
+    def scroll(self, amount: int):
+        """Performs a mouse scroll."""
+        try:
+            pyautogui.scroll(amount)
+            logger.info(f"Mouse scroll: {amount}")
+        except Exception as e:
+            logger.error(f"Failed to scroll mouse: {str(e)}")

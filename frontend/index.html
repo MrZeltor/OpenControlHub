@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OpenControlHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
@@ -24,31 +28,31 @@
                 <h3>Favoritos</h3>
                 <div class="grid-buttons">
                     <button onclick="apps.launch('C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Riot Games/League of Legends.lnk', 'LoL')">
-                        <span class="icon">🎮</span> LoL
+                        <span class="icon"><i class="fa-solid fa-gamepad"></i></span> LoL
                     </button>
                     <button onclick="apps.launch('discord://', 'Discord')">
-                        <span class="icon">💬</span> Discord
+                        <span class="icon"><i class="fa-brands fa-discord"></i></span> Discord
                     </button>
                     <button onclick="apps.launch('start steam://open/main', 'Steam')">
-                        <span class="icon">🕹️</span> Steam
+                        <span class="icon"><i class="fa-brands fa-steam"></i></span> Steam
                     </button>
                     <button onclick="apps.launch('start spotify', 'Spotify')">
-                        <span class="icon">🎵</span> Spotify
+                        <span class="icon"><i class="fa-brands fa-spotify"></i></span> Spotify
                     </button>
                     <button onclick="apps.launch('start winword', 'Word')">
-                        <span class="icon">📝</span> Word
+                        <span class="icon"><i class="fa-solid fa-file-word"></i></span> Word
                     </button>
                     <button onclick="system.openExplorer('')">
-                        <span class="icon">📂</span> Explorador
+                        <span class="icon"><i class="fa-solid fa-folder-open"></i></span> Archivos
                     </button>
                 </div>
             </div>
 
             <div class="card">
-                <h3>Entrada de Texto</h3>
+                <h3>Voz e IA</h3>
                 <div class="prompt-container">
-                    <textarea id="promptInput" placeholder="Escribe algo al PC..."></textarea>
-                    <button class="btn-primary" onclick="apps.sendPrompt()">Enviar al PC</button>
+                    <textarea id="promptInput" placeholder="Comandos por voz: Próximamente..."></textarea>
+                    <button class="btn-primary" onclick="apps.sendPrompt()"><i class="fa-solid fa-paper-plane"></i> Enviar Texto</button>
                 </div>
             </div>
         </section>
@@ -98,17 +102,20 @@
 
         <!-- Pestaña Remota -->
         <section id="remote-tab" class="tab-content remote-tab-flex">
-            <!-- Barra de Controles Compacta -->
-            <div class="control-header-bar">
-                <select id="monitorSelect" class="mini-select" onchange="remote.setMonitor(this.value)">
-                    <option value="0">Toda la Pantalla</option>
-                </select>
-                <div class="header-controls">
-                    <button class="mini-btn" onclick="remote.adjustZoom(-0.2)">➖</button>
-                    <button class="mini-btn" onclick="remote.adjustZoom(0.2)">➕</button>
-                    <button class="mini-btn" onclick="keyboard.toggle()">⌨️</button>
-                    <button class="mini-btn btn-enter" onclick="keyboard.pressKey('enter')">↵ Intro</button>
-                    <button id="toggleStreamBtn" class="btn-primary mini-btn" onclick="remote.toggleStream()">▶ Iniciar</button>
+            <!-- Barra de Controles Organizada -->
+            <div class="control-header-bar" style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <select id="monitorSelect" class="mini-select" style="flex: 1; margin-right: 10px;" onchange="remote.setMonitor(this.value)">
+                        <option value="0">Toda la Pantalla</option>
+                    </select>
+                    <button id="toggleStreamBtn" class="btn-primary mini-btn" onclick="remote.toggleStream()"><i class="fa-solid fa-play"></i> Iniciar</button>
+                </div>
+                <div class="header-controls" style="display: flex; justify-content: space-between;">
+                    <button class="mini-btn" onclick="remote.adjustZoom(-0.2)"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                    <button class="mini-btn" onclick="remote.adjustZoom(0.2)"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                    <button class="mini-btn" onclick="keyboard.toggle()"><i class="fa-regular fa-keyboard"></i></button>
+                    <button class="mini-btn btn-enter" onclick="keyboard.pressKey('enter')"><i class="fa-solid fa-arrow-turn-down" style="transform: rotate(90deg)"></i> Intro</button>
+                    <button class="mini-btn" onclick="remote.forceReload()" title="Forzar recarga de cuadro"><i class="fa-solid fa-rotate"></i></button>
                 </div>
             </div>
 
@@ -127,6 +134,15 @@
                 <div class="mouse-horizontal-buttons">
                     <button class="btn-click" onclick="mouse.click('left')">CLICK IZQ</button>
                     <button class="btn-click" onclick="mouse.click('right')">CLICK DER</button>
+                </div>
+                <div class="mouse-scroll-buttons" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+                    <button class="btn-click" style="flex: 1;" onclick="mouse.scroll(300)"><i class="fa-solid fa-arrow-up"></i> SUBIR</button>
+                    <button class="btn-click" style="flex: 1;" onclick="mouse.scroll(-300)"><i class="fa-solid fa-arrow-down"></i> BAJAR</button>
+                </div>
+                <div class="sensitivity-control">
+                    <label for="sensSlider">Sensib. Mouse:</label>
+                    <input type="range" id="sensSlider" class="glass-slider" min="0.5" max="5.0" step="0.5" value="3.0" oninput="mouse.updateSensitivity(this.value)">
+                    <span id="sensValue">3.0x</span>
                 </div>
             </div>
         </section>

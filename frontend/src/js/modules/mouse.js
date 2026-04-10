@@ -1,7 +1,7 @@
 const mouse = {
     lastX: 0,
     lastY: 0,
-    sensitivity: 1.5,
+    sensitivity: 3.0,
     
     init: () => {
         const trackpad = document.getElementById('trackpad');
@@ -31,6 +31,16 @@ const mouse = {
     
     click: (button) => {
         sendCommand('mouse', 'click', button);
+    },
+
+    scroll: (amount) => {
+        sendCommand('mouse', 'scroll', amount);
+    },
+
+    updateSensitivity: (value) => {
+        mouse.sensitivity = parseFloat(value);
+        const display = document.getElementById('sensValue');
+        if (display) display.textContent = value + 'x';
     }
 };
 

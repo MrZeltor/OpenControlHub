@@ -51,7 +51,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 payload = message.get("data")
 
                 if module_name == "system" and action == "request_frame":
-                    frame = screen_capturer.get_frame(quality=50) 
+                    frame = screen_capturer.get_frame(quality=45, max_width=1150) 
                     if frame:
                         await websocket.send_json({
                             "type": "frame",
