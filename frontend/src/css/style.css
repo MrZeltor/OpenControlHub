@@ -97,18 +97,19 @@ main {
 
 .control-header-bar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2px 0;
+    flex-direction: column;
+    gap: 6px;
     flex-shrink: 0;
 }
 
-.header-controls {
+.control-row {
     display: flex;
-    gap: 4px;
+    align-items: center;
+    gap: 6px;
 }
 
 .mini-select {
+    flex: 1;
     background-color: #21262d;
     color: var(--text-color);
     border: 1px solid #30363d;
@@ -164,13 +165,10 @@ main {
 
 .trackpad-container-full {
     flex: 1;
-    /* Fills remaining space */
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     min-height: 0;
-    /* Critical for flex stability */
-    padding-bottom: 12px;
 }
 
 .trackpad-area {
@@ -189,10 +187,10 @@ main {
     font-size: 0.8rem;
 }
 
-.mouse-horizontal-buttons {
+.mouse-buttons-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    gap: 8px;
     flex-shrink: 0;
 }
 
@@ -399,19 +397,14 @@ textarea {
     transition: opacity 0.3s;
 }
 
-/* Slider de Sensibilidad */
+/* Slider de Sensibilidad (en control-header-bar) */
 .sensitivity-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 5px;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     color: #8b949e;
     background-color: rgba(255, 255, 255, 0.03);
-    padding: 10px 15px;
-    border-radius: var(--border-radius);
+    padding: 5px 10px;
+    border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
 }
 
 .glass-slider {

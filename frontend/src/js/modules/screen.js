@@ -1,17 +1,19 @@
 const remote = {
     isStreaming: false,
     zoomLevel: 1,
-    
+    _pendingFrame: false,
+
     toggleStream: () => {
         remote.isStreaming = !remote.isStreaming;
         const btn = document.getElementById('toggleStreamBtn');
         if (remote.isStreaming) {
-            btn.textContent = '⏸ Parar';
+            btn.innerHTML = '<i class="fa-solid fa-pause"></i> Parar';
             btn.classList.add('btn-active');
+            remote._pendingFrame = false;
             remote.requestFrame();
             showToast('Transmisión Iniciada');
         } else {
-            btn.textContent = '▶ Iniciar';
+            btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar';
             btn.classList.remove('btn-active');
             showToast('Transmisión Parada');
         }
@@ -34,25 +36,36 @@ const remote = {
         if (!remote.isStreaming) {
             remote.isStreaming = true;
             const btn = document.getElementById('toggleStreamBtn');
-            btn.textContent = '⏸ Parar';
+            btn.innerHTML = '<i class="fa-solid fa-pause"></i> Parar';
             btn.classList.add('btn-active');
         }
+        remote._pendingFrame = false;
         remote.requestFrame();
         showToast('Cuadro recargado');
     },
-    
+
     requestFrame: () => {
-        if (remote.isStreaming) {
+        if (remote.isStreaming && !remote._pendingFrame) {
+            remote._pendingFrame = true;
             sendCommand('system', 'request_frame', null);
         }
     },
-    
+
     handleFrame: (base64Data) => {
         const img = document.getElementById('screenStream');
         img.src = `data:image/jpeg;base64,${base64Data}`;
-        
-        if (remote.isStreaming) {
+        remote._pendingFrame = false;
+
+        if (remote.isStreaming && !document.hidden) {
             requestAnimationFrame(() => remote.requestFrame());
         }
     }
 };
+
+// Reanudar stream automáticamente al volver de minimizar/cambiar de tab
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && remote.isStreaming) {
+        remote._pendingFrame = false;
+        remote.requestFrame();
+    }
+});
